@@ -1,0 +1,88 @@
+*{
+  margin:0;
+  padding:0;
+}
+body{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  overflow-x:hidden;
+  background-color: #000;
+  color:#fff
+}
+html{
+  overflow-x:hidden
+}
+.nav{
+  padding-left: 150px;
+  padding-right: 150px;
+  position: sticky;
+}
+.screen-1, .screen-2{
+  padding-left: 150px;
+  padding-right:150px;
+}
+.inputBox{
+  padding-left: 150px;
+  padding-right:150px;
+}
+.input input, .user, .ai{
+  padding:15px;
+}
+.input{
+  margin:auto;
+}
+.user{
+  margin-left:auto;
+}
+.ai{
+  margin-right: auto;
+}
+
+h3{
+  font-size: 23px !important;
+  margin:10px 0px;
+}
+ol, ul{
+  list-style: decimal;
+  margin-left:20px;
+  margin-top:10px;
+  margin-bottom:10px;
+}
+li{
+  list-style: disc;
+}
+.card{
+  width:200px;
+  padding:15px ;
+}
+.p{
+  margin-top:20px;
+
+}
+.user{
+  margin-top: 6px;
+}
+.ai{
+  margin-top: 10px;
+}
+@media (max-width:500px){
+  .inputBox{
+     padding-left: 50px;
+    padding-right:50px;
+
+  }
+  
+  .screen-1, .screen-2{
+  padding-left: 30px;
+  padding-right:30px;
+}
+.nav{
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.p{
+  font-size: small;
+}
+
+}
