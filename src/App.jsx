@@ -11,37 +11,54 @@ function App() {
   const [screen, setScreen] = useState(1);
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false)
-  const ai = new GoogleGenAI({apiKey: "AIzaSyDeuYcZNBNUGoqfogeSAyIvVaRPWtMf_G4"});
+  const ai = new GoogleGenAI({apiKey: import.meta.env.VITE_GEMINI_API_KEY});
 
   let messages = [];
   
 
   const [data,setData] = useState(messages);
 
-  async function getResponse() {
-    if(prompt === ""){
-      alert("Please enter a prompt")
-      return;
-    }
+ async function getResponse() {
+  if (prompt === "" || loading) return;
 
-    setData(prevData => [...prevData, {role: "user", content: prompt}])
-    setScreen(2);
-    setLoading(true);
-
-  const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: prompt,
-  });
-
-  setData(prevData => [...prevData, {role: "ai", content: response.text}]);
+  const userMessage = prompt;
   setPrompt("");
-  setLoading(false);
+
+  setData(prev => [
+    ...prev,
+    { role: "user", content: userMessage }
+  ]);
+
+  setScreen(2);
+  setLoading(true);
+
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: userMessage,
+    });
+
+    setData(prev => [
+      ...prev,
+      { role: "ai", content: response.text }
+    ]);
+
+  } catch (error) {
+    console.log(error);
+
+    setData(prev => [
+      ...prev,
+      { role: "ai", content: "Error getting response." }
+    ]);
+
+  } finally {
+    setLoading(false);
+  }
 }
-  
 
   return (
     <>
-     <div>
+     <div className='w-screen h-screen flex flex-col overflow-hidden'>
     
       <Navbar/>
 
@@ -63,12 +80,12 @@ function App() {
                 <>
                   {
                   item.role === "user"? 
-                  <div className='user bg-gray-800 rounded-lg w-fit max-w-[40vw] mb-5 ml-[auto] '>
+                  <div className='user bg-gray-800 rounded-lg w-fit max-w-[40vw] mb-5 ml-[auto] overflow-x-scroll '>
                     <p className="text-[14px] text-gray-400 ">User</p>
                     <p>{item.content}</p>
                   </div>
                   :
-                  <div className='ai mb-5 bg-gray-700 rounded-lg mr-[auto]  w-fit max-w-[40vw] ' >
+                  <div className='ai mb-5 bg-gray-700 rounded-lg   w-fitt max-w-[70vw] overflow-x-scroll' >
                     <p className="text-[14px] text-gray-400 ">ChatBOT</p>
                     <p>{item.content}</p>
                   </div>
@@ -94,7 +111,7 @@ function App() {
       </div>
 
       <div className="inputBox h-[20vh] pt-3">
-        <div className="input w-[90%]  flex items-center gap-[10px] bg-zinc-800 rounded-lg ">
+        <div className="input w-[90%]  flex items-center gap-[10px] bg-zinc-800 rounded-lg overflow-x-hidden">
           <input 
           onKeyDown={(e)=>{
             if(e.key === "Enter"){
@@ -102,7 +119,7 @@ function App() {
             }
           }}
           onChange={(e)=> {setPrompt(e.target.value)}}  value={prompt} type="text" placeholder='Enter your prompt'
-           className='flex-1 bg-trensparent p-20px outline-none text-[18px] font-[500]'
+           className='flex-1 bg-transparent p-5 outline-none text-[18px] font-[500]'
            />
         </div>
         <p className='text-[gray] text-center mt-3 '>ChatBOT can make mistakes! cross check it.</p>

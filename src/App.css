@@ -18,6 +18,7 @@ html{
   padding-right: 150px;
   position: sticky;
 }
+
 .screen-1, .screen-2{
   padding-left: 150px;
   padding-right:150px;
@@ -25,6 +26,7 @@ html{
 .inputBox{
   padding-left: 150px;
   padding-right:150px;
+  position:sticky;
 }
 .input input, .user, .ai{
   padding:15px;
@@ -37,6 +39,7 @@ html{
 }
 .ai{
   margin-right: auto;
+  width:60%;
 }
 
 h3{
